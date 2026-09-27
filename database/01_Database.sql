@@ -1,3 +1,5 @@
+DROP DATABASE ads_portfolio;
+
 CREATE DATABASE IF NOT EXISTS ads_portfolio;
 
 USE ads_portfolio;
@@ -12,9 +14,16 @@ CREATE TABLE users (
     phoneno VARCHAR(200),
     dob DATE,
     address VARCHAR(250),
+    photo_path VARCHAR(250),
 
     CONSTRAINT user_name UNIQUE (first_name, middle_name, last_name),
     UNIQUE (email)
+);
+
+CREATE TABLE photos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(250) NOT NULL,
+    path VARCHAR(250) NOT NULL
 );
 
 CREATE TABLE links (
@@ -64,8 +73,10 @@ CREATE TABLE projects(
 CREATE TABLE project_description(
     project_id INT, 
     description_id INT, 
+    path_id INT, 
     FOREIGN KEY (project_id) REFERENCES projects(id),
-    FOREIGN KEY (description_id) REFERENCES descriptions(id) 
+    FOREIGN KEY (description_id) REFERENCES descriptions(id), 
+    FOREIGN KEY (path_id) REFERENCES photos(id)
 );
 
 CREATE TABLE work_experience(
