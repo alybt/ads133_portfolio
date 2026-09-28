@@ -10,9 +10,18 @@
             "src/"
         ],
         "files": [
+            "src/config/config.php",
             "src/Support/helpers.php"
-        ]
+        ],
+        "config": {
+            "optimize-autoloader": true,
+            "classmap-authoritative": true
+        }
     }
+    
 }
+
+
+
 
 

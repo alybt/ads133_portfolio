@@ -181,3 +181,9 @@ function scripts(string|array $files): string {
 
     return $html;
 }
+
+function redirect(string $to): void
+{
+    header('Location: ' . $to);
+    exit;
+}

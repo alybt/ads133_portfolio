@@ -1,0 +1,101 @@
+.navbar {
+    z-index: 100;
+    align-items: center;
+    padding: 1.75rem 3rem;
+    transition: background .3s, padding .3s, border-bottom .3s;
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+.navLogo {
+    font-family: var(--font-display, sans-serif);
+    letter-spacing: .08em;
+    color: var(--parchment, #fff);
+    font-size: 1.6rem;
+}
+
+.navLinks {
+    gap: 2.5rem;
+    margin-left: auto;
+    margin-right: 3rem;
+    display: flex;
+}
+
+.navLink {
+    font-family: var(--font-mono, monospace);
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--grey-mid, #aaa);
+    font-size: .7rem;
+    transition: color .2s;
+    position: relative;
+}
+
+a {
+    text-decoration: none;
+}
+
+.navHamburger {
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    flex-direction: column;
+    gap: 5px;
+    margin-left: auto;
+    padding: 4px;
+    display: none;
+    z-index: 101;
+}
+
+.navBurgerLine {
+    background: var(--parchment, #fff);
+    width: 24px;
+    height: 1.5px;
+    transition: transform .25s, opacity .25s;
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        padding: 1.25rem 1.5rem;
+    }
+
+    .navLinks {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+        padding: 2rem 1rem;
+        background: var(--bg, #111);
+        margin: 0;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    /* High specificity to ensure display toggle overrides any base resets */
+    .navLinks.open {
+        display: flex !important;
+    }
+
+    .navHamburger {
+        display: flex;
+    }
+
+    .navHamburger.active .navBurgerLine:nth-child(1) {
+        transform: translateY(6.5px) rotate(45deg);
+    }
+
+    .navHamburger.active .navBurgerLine:nth-child(2) {
+        opacity: 0;
+    }
+
+    .navHamburger.active .navBurgerLine:nth-child(3) {
+        transform: translateY(-6.5px) rotate(-45deg);
+    }
+}
