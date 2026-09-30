@@ -3,4 +3,16 @@
     width: 100vw;
     height: 100vh;
     padding: 3vw;
+    padding-top: 5vw;
+}
+
+.userName{
+    display: flex;
+    height: 100%;
+    width: 100%;
+    padding-left: 1vw;
+    padding-right: 1vw;
+    font-size: 10rem;
+    text-align: end;
+    align-items: end;
 }

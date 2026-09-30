@@ -4,6 +4,14 @@ error_reporting(E_ALL);
 
 require_once dirname(__DIR__) . '/vendor/autoload.php';
 require_once dirname(__DIR__) . '/src/config/config.php';
+
+use App\Router\Router;
+use App\Controllers\AuthController;
+
+$router = new Router();
+$router->onGet('/login',  [AuthController::class, 'showLogin']);
+$router->onPost('/login', [AuthController::class, 'login']);
+$router->onPost('/logout', [AuthController::class, 'logout']);
 ?>
 
 <!DOCTYPE html>
