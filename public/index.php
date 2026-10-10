@@ -7,6 +7,8 @@ require_once dirname(__DIR__) . '/src/config/config.php';
 
 use App\Router\Router;
 use App\Controllers\AuthController;
+use App\Controllers\EducationController;
+use App\Controllers\CertificateController;
 
 $router = new Router();
 
@@ -39,5 +41,25 @@ $router->onPost('auth/logout', [AuthController::class, 'logout']);
 $router->onGet('auth/logout',  [AuthController::class, 'logout']);
 $router->onPost('logout',      [AuthController::class, 'logout']);
 $router->onGet('logout',       [AuthController::class, 'logout']);
+
+// Education routes (protected by Auth)
+$router->onGet('educations',                     [EducationController::class, 'create']);
+$router->onPost('educations',                    [EducationController::class, 'store']);
+$router->onGet('educations/create',              [EducationController::class, 'create']);
+$router->onPost('educations/delete',             [EducationController::class, 'delete']);
+$router->onGet('views/features/educations/eduform.php', [EducationController::class, 'create']);
+$router->onPost('views/features/educations/eduform.php', [EducationController::class, 'store']);
+$router->onGet('features/educations/eduform',    [EducationController::class, 'create']);
+$router->onPost('features/educations/eduform',   [EducationController::class, 'store']);
+
+// Certificate routes (protected by Auth)
+$router->onGet('certificates',                      [CertificateController::class, 'create']);
+$router->onPost('certificates',                     [CertificateController::class, 'store']);
+$router->onGet('certificates/create',               [CertificateController::class, 'create']);
+$router->onPost('certificates/delete',              [CertificateController::class, 'delete']);
+$router->onGet('views/features/certificates/certform.php',  [CertificateController::class, 'create']);
+$router->onPost('views/features/certificates/certform.php', [CertificateController::class, 'store']);
+$router->onGet('features/certificates/certform',     [CertificateController::class, 'create']);
+$router->onPost('features/certificates/certform',    [CertificateController::class, 'store']);
 
 $router->dispatch();

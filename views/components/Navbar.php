@@ -16,6 +16,11 @@ use App\Support\Auth;
             'Services' => '#',
             'Contact' => '#',
         ];
+
+        if (Auth::check()) {
+            $navItems['Education']    = url('educations');
+            $navItems['Certificates'] = url('certificates');
+        }
     ?>
     <nav class="navLinks" id="navLinks">
         <?php foreach ($navItems as $label => $targetUrl): ?>
