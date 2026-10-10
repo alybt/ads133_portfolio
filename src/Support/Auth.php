@@ -15,16 +15,25 @@ class Auth{
         $repo = new UserRepository();
         $user = $repo->findByEmail($email);
 
-        if (!$user || !password_verify($password, $user->password)) {
+        if (!$user) {
             return false;
         }
 
-        if (password_needs_rehash($user->password, PASSWORD_DEFAULT)) {
+        // Support password_verify as well as plain text (for initial DB seed data)
+        $isValid = password_verify($password, $user->password) || ($user->password === $password);
+        if (!$isValid) {
+            return false;
+        }
+
+        // Securely rehash if it was plain-text or needs rehashing
+        if ($user->password === $password || password_needs_rehash($user->password, PASSWORD_DEFAULT)) {
             $user->password = password_hash($password, PASSWORD_DEFAULT);
             $repo->update($user);
         }
 
-        session_regenerate_id(true);  
+        if (session_status() === PHP_SESSION_ACTIVE) {
+            session_regenerate_id(true);  
+        }
         $_SESSION[self::SESSION_KEY] = $user->id;
         self::$cached = $user;
 
@@ -35,7 +44,9 @@ class Auth{
     {
         unset($_SESSION[self::SESSION_KEY]);
         self::$cached = null;
-        session_regenerate_id(true);
+        if (session_status() === PHP_SESSION_ACTIVE) {
+            session_regenerate_id(true);
+        }
     }
 
     public static function check(): bool
@@ -68,11 +79,11 @@ class Auth{
         return self::user()?->id;
     }
 
-    public static function requireLogin(string $redirectTo = '/login'): void
+    public static function requireLogin(string $redirectTo = 'auth/login'): void
     {
         if (!self::check()) {
             $_SESSION['_intended'] = $_SERVER['REQUEST_URI'] ?? '/';
-            redirect($redirectTo);
+            redirect(url($redirectTo));
         }
     }
 }

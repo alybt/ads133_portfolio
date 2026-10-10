@@ -8,9 +8,14 @@ use RuntimeException;
 class Router{
     private array $routes = [];
 
-    public function get(string $path, callable $handler): void
+    public function get(string $path, callable|array $handler): void
     {
-        $this->routes[$path] = $handler;
+        $this->add('GET', $path, $handler);
+    }
+
+    public function post(string $path, callable|array $handler): void
+    {
+        $this->add('POST', $path, $handler);
     }
 
     public function add(string $method, string $path, callable|array $handler): void
@@ -31,20 +36,45 @@ class Router{
     public function onPut(string $path, callable|array $handler): void    { $this->add('PUT', $path, $handler); }
     public function onDelete(string $path, callable|array $handler): void { $this->add('DELETE', $path, $handler); }
 
-    public function dispatch(string $uri): void
+    public function dispatch(?Request $request = null): void
     {
-        $uri = rtrim($uri, '/') ?: '/';
+        $request ??= Request::capture();
+        $method = $request->method;
+        $path   = $this->normalize($request->path);
 
-        if (!isset($this->routes[$uri])) {
-            http_response_code(404);
-            
+        // 1. Direct match
+        if (isset($this->routes[$method][$path])) {
+            $this->invoke($this->routes[$method][$path], $request);
             return;
         }
 
-        call_user_func($this->routes[$uri]);
+        // 2. Pattern match (e.g. /users/{id})
+        if (!empty($this->routes[$method])) {
+            foreach ($this->routes[$method] as $routePath => $handler) {
+                if (str_contains($routePath, '{')) {
+                    $pattern = preg_replace('/\{([a-zA-Z0-9_]+)\}/', '(?P<$1>[^/]+)', $routePath);
+                    $pattern = '#^' . $pattern . '$#';
+                    if (preg_match($pattern, $path, $matches)) {
+                        $params = array_filter($matches, 'is_string', ARRAY_FILTER_USE_KEY);
+                        $request = $request->withParams($params);
+                        $this->invoke($handler, $request);
+                        return;
+                    }
+                }
+            }
+        }
+
+        http_response_code(404);
+        if (is_file(VIEW_PATH . '/pages/404.php')) {
+            view('pages/404', ['pageTitle' => '404 Not Found']);
+        } elseif (is_file(BASE_PATH . '/public/pages/404.php')) {
+            require BASE_PATH . '/public/pages/404.php';
+        } else {
+            echo "404 Not Found";
+        }
     }
 
-    private function invoke(callable|array $handler): void
+    private function invoke(callable|array $handler, Request $request): void
     {
         // [Controller::class, 'method']
         if (is_array($handler) && is_string($handler[0] ?? null)) {
@@ -56,13 +86,13 @@ class Router{
             if (!method_exists($controller, $action)) {
                 throw new RuntimeException("Action not found: {$class}::{$action}");
             }
-            $controller->$action();
+            $controller->$action($request);
             return;
         }
 
         // plain closure
         if (is_callable($handler)) {
-            $handler();
+            $handler($request);
             return;
         }
 
@@ -74,5 +104,4 @@ class Router{
         $path = '/' . ltrim($path, '/');
         return $path === '/' ? '/' : rtrim($path, '/');
     }
-
 }

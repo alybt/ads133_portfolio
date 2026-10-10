@@ -1,25 +1,40 @@
+<?php 
+use App\Support\Auth;
+?>
 <head>
     <link rel="stylesheet" href="<?= css('components/Navbar') ?>">
 </head>
 <header class="navbar">
-    <a href="#" class="navLogo"> 
+    <a href="<?= url('/') ?>" class="navLogo"> 
         Logo
     </a>
 
     <?php 
         $navItems = [
-            'Home' => '#',
+            'Home' => url('/'),
             'About' => '#',
             'Services' => '#',
-            'Contact' => '#'
+            'Contact' => '#',
         ];
     ?>
     <nav class="navLinks" id="navLinks">
-        <?php foreach ($navItems as $label => $url): ?>
-            <a href="<?= htmlspecialchars($url) ?>" class="navLink">
+        <?php foreach ($navItems as $label => $targetUrl): ?>
+            <a href="<?= htmlspecialchars($targetUrl) ?>" class="navLink">
                 <?= htmlspecialchars($label) ?>
             </a>
         <?php endforeach; ?>
+
+        <?php if (Auth::check()): ?>
+            <form action="<?= url('auth/logout') ?>" method="POST" style="display: inline; margin: 0;">
+                <button type="submit" class="navLink navLink--acid">
+                    Sign Out
+                </button>
+            </form>
+        <?php else: ?>
+            <a href="<?= url('auth/login') ?>" class="navLink navLink--acid">
+                Sign In
+            </a>
+        <?php endif; ?>
     </nav>
 
     <button class="navHamburger" id="navHamburger" aria-label="Toggle Menu" aria-expanded="false">

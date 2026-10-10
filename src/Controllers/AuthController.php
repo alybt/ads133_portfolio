@@ -70,6 +70,6 @@ class AuthController
     {
         Auth::logout();
         Flash::set('success', 'You have been signed out.');
-        redirect(url('login'));
+        redirect(url('/'));
     }
 }

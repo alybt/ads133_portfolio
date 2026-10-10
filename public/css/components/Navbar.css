@@ -22,6 +22,7 @@
     margin-left: auto;
     margin-right: 3rem;
     display: flex;
+    align-items: center;
 }
 
 .navLink {
@@ -32,6 +33,45 @@
     font-size: .7rem;
     transition: color .2s;
     position: relative;
+}
+
+.navLink:hover {
+    color: var(--parchment, #fff);
+}
+
+.navLink--acid {
+    color: var(--acid, #c8ff00) !important;
+    font-family: var(--font-mono, monospace);
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    font-size: .7rem;
+    transition: color .2s, text-shadow .2s;
+}
+
+.navLink--acid:hover {
+    color: var(--parchment, #fff) !important;
+    text-shadow: 0 0 10px rgba(200, 255, 0, 0.6);
+}
+
+button.navLink {
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    font-family: var(--font-mono, monospace);
+    font-size: .7rem;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--grey-mid, #aaa);
+    line-height: inherit;
+    display: inline-flex;
+    align-items: center;
+    transition: color .2s;
+}
+
+button.navLink:hover {
+    color: var(--parchment, #fff);
 }
 
 a {

@@ -16,10 +16,20 @@ class Request
         $uri    = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
         $method = strtoupper($_SERVER['REQUEST_METHOD'] ?? 'GET');
 
-        // Strip base path so routes work under /online-resume/public
-        $base = \defined('BASE_URL') ? \constant('BASE_URL') : '';
+        // Strip base path dynamically so routes work under /ads133_portfolio/public or root
+        if (\defined('BASE_URL') && BASE_URL !== '') {
+            $base = rtrim(BASE_URL, '/');
+        } else {
+            $scriptDir = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'] ?? ''));
+            $base = in_array($scriptDir, ['/', '.', ''], true) ? '' : rtrim($scriptDir, '/');
+        }
+
         if ($base !== '' && \str_starts_with($uri, $base)) {
             $uri = \substr($uri, \strlen($base)) ?: '/';
+        }
+
+        if ($uri === '/index.php') {
+            $uri = '/';
         }
 
         return new self($method, '/' . \ltrim($uri, '/'), $_GET, $_POST, $_FILES);

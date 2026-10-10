@@ -9,6 +9,10 @@ if (!defined('BASE_PATH')) {
 $dotenv = Dotenv::createImmutable(BASE_PATH);
 $dotenv->safeLoad();
 
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 if (!defined('APP_URL')) {
     define('APP_URL', rtrim($_ENV['APP_URL'] ?? 'http://localhost:8000', '/'));
 }

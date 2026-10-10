@@ -9,21 +9,35 @@ use App\Router\Router;
 use App\Controllers\AuthController;
 
 $router = new Router();
-$router->onGet('/login',  [AuthController::class, 'showLogin']);
-$router->onPost('/login', [AuthController::class, 'login']);
-$router->onPost('/logout', [AuthController::class, 'logout']);
-?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Online Resume</title>
-    <link rel="stylesheet" href="<?= css('index') ?>">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-<body>
-    <?php view('components/Navbar');?>
-    <?php view('features/user/homepage');?>
-</body>
-</html>
+// Homepage
+$router->onGet('/', function () {
+    ?>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Online Resume</title>
+        <link rel="stylesheet" href="<?= css('index') ?>">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <?php view('components/Navbar'); ?>
+        <?php view('features/user/homepage'); ?>
+    </body>
+    </html>
+    <?php
+});
+
+// Authentication routes
+$router->onGet('auth/login',   [AuthController::class, 'showLogin']);
+$router->onPost('auth/login',  [AuthController::class, 'login']);
+$router->onGet('login',        [AuthController::class, 'showLogin']);
+$router->onPost('login',       [AuthController::class, 'login']);
+
+$router->onPost('auth/logout', [AuthController::class, 'logout']);
+$router->onGet('auth/logout',  [AuthController::class, 'logout']);
+$router->onPost('logout',      [AuthController::class, 'logout']);
+$router->onGet('logout',       [AuthController::class, 'logout']);
+
+$router->dispatch();
