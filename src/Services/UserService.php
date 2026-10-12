@@ -11,8 +11,8 @@ class UserService
 {
     public function __construct(
         private UserRepositoryInterface $repo,
-        private string $uploadDir = BASE_PATH . '/public/uploads/users',
-        private string $uploadUrl = 'uploads/users'
+        private string $uploadDir = BASE_PATH . '/public/assets/photos',
+        private string $uploadUrl = 'assets/photos'
     ) {}
 
     /** @return User[] */

@@ -74,9 +74,11 @@ CREATE TABLE project_description(
     project_id INT, 
     description_id INT, 
     path_id INT, 
+    link_id INT, 
     FOREIGN KEY (project_id) REFERENCES projects(id),
     FOREIGN KEY (description_id) REFERENCES descriptions(id), 
-    FOREIGN KEY (path_id) REFERENCES photos(id)
+    FOREIGN KEY (path_id) REFERENCES photos(id),
+    FOREIGN KEY (link_id) REFERENCES links(id)
 );
 
 CREATE TABLE work_experience(

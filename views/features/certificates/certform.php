@@ -97,7 +97,7 @@ $certificates = $certificates ?? $repo->all();
 <body>
     <?php view('components/Navbar'); ?>
 
-    <main class="edu-page">
+    <main class="cert-page">
         <div class="cert-container">
             
             <!-- Certificate Input Form Card (Structure aligned with Education form) -->
@@ -123,7 +123,7 @@ $certificates = $certificates ?? $repo->all();
                     </div>
                 <?php endif; ?>
 
-                <form action="<?= htmlspecialchars($_SERVER['REQUEST_URI']) ?>" method="POST" class="edu-form">
+                <form action="<?= htmlspecialchars($_SERVER['REQUEST_URI']) ?>" method="POST" class="cert-form edu-form">
                     
                     <!-- Certificate Title Field (Mapped from School Name) -->
                     <div class="form-field">
@@ -147,7 +147,7 @@ $certificates = $certificates ?? $repo->all();
                     </div>
 
                     <!-- Company/Issuer and Date Grid (Mapped from Address + Start Date) -->
-                    <div class="edu-form-grid">
+                    <div class="cert-form-grid edu-form-grid">
                         
                         <!-- Issuing Organization / Company Field (Mapped from Address) -->
                         <div class="form-field">
@@ -213,7 +213,7 @@ $certificates = $certificates ?? $repo->all();
             <section class="cert-list-card">
                 <div class="cert-list-header">
                     <h2 class="cert-list-title">Recorded Certificates</h2>
-                    <span class="edu-count-badge"><?= count($certificates) ?> Records</span>
+                    <span class="cert-count-badge edu-count-badge"><?= count($certificates) ?> Records</span>
                 </div>
 
                 <?php if (empty($certificates)): ?>
@@ -222,7 +222,7 @@ $certificates = $certificates ?? $repo->all();
                     </div>
                 <?php else: ?>
                     <div class="table-responsive">
-                        <table class="edu-table cert-table-override">
+                        <table class="cert-table edu-table cert-table-override">
                             <thead>
                                 <tr>
                                     <th>Certificate Title</th>
@@ -237,7 +237,7 @@ $certificates = $certificates ?? $repo->all();
                                         <td>
                                             <strong><?= htmlspecialchars($cert->title) ?></strong>
                                             <?php if (!empty($cert->description)): ?>
-                                                <div class="desc-text"><?= nl2br(htmlspecialchars($cert->description)) ?></div>
+                                                <div class="cert-desc-text desc-text"><?= nl2br(htmlspecialchars($cert->description)) ?></div>
                                             <?php endif; ?>
                                         </td>
                                         <td>

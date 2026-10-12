@@ -9,6 +9,8 @@ use App\Router\Router;
 use App\Controllers\AuthController;
 use App\Controllers\EducationController;
 use App\Controllers\CertificateController;
+use App\Controllers\ProjectController;
+use App\Controllers\LinkController;
 
 $router = new Router();
 
@@ -61,5 +63,27 @@ $router->onGet('views/features/certificates/certform.php',  [CertificateControll
 $router->onPost('views/features/certificates/certform.php', [CertificateController::class, 'store']);
 $router->onGet('features/certificates/certform',     [CertificateController::class, 'create']);
 $router->onPost('features/certificates/certform',    [CertificateController::class, 'store']);
+
+// Project routes (protected by Auth)
+$router->onGet('projects',                      [ProjectController::class, 'create']);
+$router->onPost('projects',                     [ProjectController::class, 'store']);
+$router->onGet('projects/create',               [ProjectController::class, 'create']);
+$router->onPost('projects/delete',              [ProjectController::class, 'delete']);
+$router->onGet('views/features/projects/projectform.php',  [ProjectController::class, 'create']);
+$router->onPost('views/features/projects/projectform.php', [ProjectController::class, 'store']);
+$router->onGet('features/projects/projectform',     [ProjectController::class, 'create']);
+$router->onPost('features/projects/projectform',    [ProjectController::class, 'store']);
+
+// Link routes (protected by Auth)
+$router->onGet('links',                         [LinkController::class, 'create']);
+$router->onPost('links',                        [LinkController::class, 'store']);
+$router->onGet('links/create',                  [LinkController::class, 'create']);
+$router->onPost('links/delete',                 [LinkController::class, 'delete']);
+$router->onGet('views/features/links/linkform.php', [LinkController::class, 'create']);
+$router->onPost('views/features/links/linkform.php',[LinkController::class, 'store']);
+$router->onGet('views/links/linkform.php',          [LinkController::class, 'create']);
+$router->onPost('views/links/linkform.php',         [LinkController::class, 'store']);
+$router->onGet('features/links/linkform',       [LinkController::class, 'create']);
+$router->onPost('features/links/linkform',      [LinkController::class, 'store']);
 
 $router->dispatch();
